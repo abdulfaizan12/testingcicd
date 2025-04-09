@@ -26,5 +26,6 @@ jobs:
             cd ${{ secrets.STAGE_PATH }}
             git pull origin stage
             npm install
-            npm run dev:local
+            pm2 start npm --name "hha-stage" -- run start
+            pm2 save
           EOF
