@@ -1,0 +1,30 @@
+name: Deploy to Stage
+
+on:
+  push:
+    branches:
+      - stage
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.STAGE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.STAGE_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Stage Server
+        run: |
+          ssh ${{ secrets.STAGE_USER }}@${{ secrets.STAGE_HOST }} << 'EOF'
+            cd ${{ secrets.STAGE_PATH }}
+            git pull origin stage
+            npm install
+            npm run dev:local
+          EOF
