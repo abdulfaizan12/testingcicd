@@ -26,5 +26,6 @@ jobs:
             cd ${{ secrets.STAGE_PATH }}
             git pull origin stage
             npm install
-            pm2 restart hha-stage
+            pm2 stop hha-stage
+            pm2 start hha-stage
           EOF
