@@ -1,4 +1,4 @@
-name: Deploy to Stage
+name: Test Locally and Deploy to Stage
 
 on:
   push:
@@ -6,27 +6,36 @@ on:
       - stage
 
 jobs:
-  deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16' # or your project's Node.js version
+          node-version: '16'  # or your version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Start App Locally (Background)
+        run: |
+          npm run start &  # Replace with your app start command
+          sleep 10         # Wait for server to be ready
 
       - name: Install Newman
         run: npm install -g newman
 
-      - name: Run Postman Tests
+      - name: Run Postman Tests on Local Server
         run: |
-          newman run ./tests/testcicd.postman_collection.json --reporters cli
-          
-      # Only if all tests pass, proceed to deploy
-      - name: Setup SSH
+          newman run ./tests/testcicd.postman_collection.json \
+            --reporters cli
+
+      - name: Setup SSH (for Deployment)
+        if: success()
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.STAGE_SSH_KEY }}" > ~/.ssh/id_rsa
@@ -34,6 +43,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.STAGE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to Stage Server
+        if: success()
         run: |
           ssh ${{ secrets.STAGE_USER }}@${{ secrets.STAGE_HOST }} << 'EOF'
             cd ${{ secrets.STAGE_PATH }}

@@ -50,7 +50,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://devops.qbscocloud.net:3040/api/hello",
+					"raw": "http://localhost:3040/api/hello",
 					"protocol": "http",
 					"host": [
 						"devops",
