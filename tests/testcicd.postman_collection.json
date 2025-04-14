@@ -54,9 +54,7 @@
 					"raw": "http://localhost:3040/api/hello",
 					"protocol": "http",
 					"host": [
-						"localhost",
-						"",
-						""
+						"localhost"
 					],
 					"port": "3040",
 					"path": [
