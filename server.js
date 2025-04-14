@@ -5,7 +5,7 @@ const PORT = 3040;
 // Simple GET endpoint
 app.get('/api/hello', (req, res) => {
   res.json({
-    message: 'Hello from your GET API testing 333!',
+    message: 'Hello from your GET API testing!',
     success: true
   });
 });
