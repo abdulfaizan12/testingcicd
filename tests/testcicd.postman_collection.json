@@ -51,12 +51,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3041/api/hello",
+					"raw": "http://localhost:3040/api/hello",
 					"protocol": "http",
 					"host": [
-						"devops",
-						"qbscocloud",
-						"net"
+						"localhost",
+						"",
+						""
 					],
 					"port": "3040",
 					"path": [
