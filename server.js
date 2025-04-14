@@ -10,7 +10,7 @@ app.get('/api/hello', (req, res) => {
   });
 });
 
-console.log("testing 123");
+console.log("testing 123234");
 
 // Start server
 app.listen(PORT, () => {
